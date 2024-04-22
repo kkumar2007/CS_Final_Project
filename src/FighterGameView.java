@@ -3,23 +3,37 @@ import java.awt.*;
 import java.util.ArrayList;
 public class FighterGameView extends JFrame
 {
-    private final int HEIGHT = 600, WIDTH = 800;
+    public static int HEIGHT = 600, WIDTH = 800;
+    private FighterGameView game;
 
-    public FighterGameView() {
+    private Image background;
+    public Fighter f;
+
+    public FighterGameView(Fighter fighter) {
+
+        f = fighter;
+        this.game = game;
+        background = new ImageIcon("Resources/Cards/amiga bisonj8.png").getImage();
+
+
+
         this.setSize(WIDTH, HEIGHT);
-        this.setTitle("Street Fighter");
+        this.setTitle("Fighter");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
 
-    @Override
+    
     public void paint(Graphics g) {
-        super.paint(g);
-
+        g.drawImage(background, 0, 0, WIDTH, HEIGHT, this);
+        f.draw(g);
     }
 
-    public static void main(String[] args) {
-        new FighterGameView();
+    public static void main(String[] args)
+    {
+        Fighter one = new Fighter(100, 20, 200, 200, 0, 0);
+        FighterGameView view = new FighterGameView(one);
     }
+
 
 }
