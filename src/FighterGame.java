@@ -1,26 +1,34 @@
 import java.awt.event.KeyEvent;
 import java.util.Random;
 import java.awt.event.KeyListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class FighterGame implements KeyListener
+
+public class FighterGame implements KeyListener, ActionListener
 {
     private FighterGameView window;
     private boolean isGameOver;
     private int state;
     private Fighter one;
     private Fighter two;
-    private static final int STEP_SIZE = 5;
+    private static final int STEP_SIZE = 20;
 
     public FighterGame() {
-        window = new FighterGameView(one);
         isGameOver = false;
         state = 0;
-        one = new Fighter(100, 20, 200, 200, 0, 0);
-        // Example health and strength for fighter one
-        two = new Fighter(100, 20, 200, 200, 0, 0);
+        one = new Fighter(100, 20, 500, 450, 0, 0, null); // pass null temporarily
+        two = new Fighter(100, 20, 200, 200, 0, 0, null); // pass null temporarily
+        window = new FighterGameView(one); // Initialize window before creating fighters
+
+        one.setView(window); // Set the view for fighter one
+        two.setView(window); // Set the view for fighter two
+
+
         // Example health and strength for fighter two
         window.addKeyListener(this);
     }
+    public void ActionPerformed()
     public void keyPressed(KeyEvent e) {
         // The keyCode lets you know which key was pressed
         switch(e.getKeyCode())
@@ -32,7 +40,6 @@ public class FighterGame implements KeyListener
                 one.shiftX(STEP_SIZE, 0, FighterGameView.WIDTH);
                 break;
             case KeyEvent.VK_UP:
-                int topOfPane = window.getInsets().top;
                 one.jump();
                 break;
             case KeyEvent.VK_W: // Cause the ball to jump to a random new location
@@ -48,12 +55,11 @@ public class FighterGame implements KeyListener
         window.repaint();
     }
     public void keyReleased(KeyEvent e) {
-        // This method is required by KeyListener but we don't need to do anything here
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // This method is required by KeyListener but we don't need to do anything here
+
     }
 
     public static void main(String[] args) {

@@ -2,6 +2,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.*;
 import java.util.Random;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 
 public class Fighter {
         private int health;
@@ -10,23 +13,30 @@ public class Fighter {
         private int y;              // Center y
         private int dx;             // delta x in one time unit
         private int dy;
-    private static final int JUMP_HEIGHT = 50;
+        public int diameter = 25;
+        private static final int JUMP_HEIGHT = 400;
+        private static final int JUMP_SPEED = 20;
+        private  FighterGameView view;
 
 
-        public Fighter(int health, int strength, int x, int y, int dx, int dy) {
+        public Fighter(int health, int strength, int x, int y, int dx, int dy, FighterGameView view) {
             this.x = x;
             this.y = y;
             this.dx = dx;
             this.dy = dy;
             this.health = health;
             this.strength = strength;
+            this.view = view;
+
+        }
+        public void setView(FighterGameView view) {
+            this.view = view;
         }
         public void defend(int damage) {
             // Reduce health by the damage received
             health -= damage;
             if (health <= 0) {
                 System.out.println("I'm defeated!");
-                // You can handle defeat logic here
             }
         }
         public void setX(int where)
@@ -38,8 +48,11 @@ public class Fighter {
             y = where;
         }
     public void jump() {
-        // Adjust the vertical position (y-axis) to simulate a jump
-        y -= JUMP_HEIGHT; // Decrease y-coordinate to move the fighter upwards
+        dy = 10;
+        }
+    public void move() {
+        y+= dy;
+        dy++;
     }
 
         // Getter for health
@@ -71,6 +84,6 @@ public class Fighter {
             Color randomColor = new Color(red, green, blue);
             g.setColor(randomColor);
 
-            g.fillOval(x, y, 25, 25);
+            g.fillOval(x - diameter, y - diameter, diameter, diameter);
         }
     }

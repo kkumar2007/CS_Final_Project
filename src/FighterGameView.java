@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+
 public class FighterGameView extends JFrame
 {
     public static int HEIGHT = 600, WIDTH = 800;
@@ -13,9 +14,7 @@ public class FighterGameView extends JFrame
 
         f = fighter;
         this.game = game;
-        background = new ImageIcon("Resources/Cards/amiga bisonj8.png").getImage();
-
-
+        background = new ImageIcon("Resources/back.png").getImage();
 
         this.setSize(WIDTH, HEIGHT);
         this.setTitle("Fighter");
@@ -27,12 +26,6 @@ public class FighterGameView extends JFrame
     public void paint(Graphics g) {
         g.drawImage(background, 0, 0, WIDTH, HEIGHT, this);
         f.draw(g);
-    }
-
-    public static void main(String[] args)
-    {
-        Fighter one = new Fighter(100, 20, 200, 200, 0, 0);
-        FighterGameView view = new FighterGameView(one);
     }
 
 
