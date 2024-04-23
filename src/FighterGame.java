@@ -19,8 +19,8 @@ public class FighterGame implements KeyListener, ActionListener
         isGameOver = false;
         state = 0;
         one = new Fighter(100, 20, 500, 450, 0, 0, null); // pass null temporarily
-        two = new Fighter(100, 20, 200, 200, 0, 0, null); // pass null temporarily
-        window = new FighterGameView(one); // Initialize window before creating fighters
+        two = new Fighter(100, 20, 200, 450, 0, 0, null); // pass null temporarily
+        window = new FighterGameView(one, two); // Initialize window before creating fighters
 
         one.setView(window); // Set the view for fighter one
         two.setView(window); // Set the view for fighter two
@@ -33,6 +33,7 @@ public class FighterGame implements KeyListener, ActionListener
     public void actionPerformed(ActionEvent e)
     {
         one.move();
+        two.move();
         window.repaint();
     }
 

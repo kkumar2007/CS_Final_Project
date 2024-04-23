@@ -9,10 +9,12 @@ public class FighterGameView extends JFrame
 
     private Image background;
     public Fighter f;
+    public Fighter f2;
 
-    public FighterGameView(Fighter fighter) {
+    public FighterGameView(Fighter fighter, Fighter f2) {
 
         f = fighter;
+        this.f2 = f2;
         this.game = game;
         background = new ImageIcon("Resources/back.png").getImage();
 
@@ -26,6 +28,7 @@ public class FighterGameView extends JFrame
     public void paint(Graphics g) {
         g.drawImage(background, 0, 0, WIDTH, HEIGHT, this);
         f.draw(g);
+        f2.draw(g);
     }
 
 

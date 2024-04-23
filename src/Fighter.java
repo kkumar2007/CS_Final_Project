@@ -13,13 +13,15 @@ public class Fighter {
         private int y;              // Center y
         private int dx;             // delta x in one time unit
         private int dy;
-        public int diameter = 25;
+        public int diameter = 50;
         private static final int JUMP_HEIGHT = 400;
         private static final int JUMP_SPEED = 20;
         private  FighterGameView view;
+        private Color color;
 
 
-        public Fighter(int health, int strength, int x, int y, int dx, int dy, FighterGameView view) {
+
+    public Fighter(int health, int strength, int x, int y, int dx, int dy, FighterGameView view) {
             this.x = x;
             this.y = y;
             this.dx = dx;
@@ -27,6 +29,7 @@ public class Fighter {
             this.health = health;
             this.strength = strength;
             this.view = view;
+            getColor();
 
         }
         public void setView(FighterGameView view) {
@@ -84,14 +87,17 @@ public class Fighter {
                 x += shift;
             }
         }
-        public void draw(Graphics g) {
+        public void getColor()
+        {
             Random random = new Random();
             int red = random.nextInt(256); // Generates a random value between 0 and 255 for red
             int green = random.nextInt(256); // Generates a random value between 0 and 255 for green
             int blue = random.nextInt(256); // Generates a random value between 0 and 255 for blue
 
-            Color randomColor = new Color(red, green, blue);
-            g.setColor(randomColor);
+            color = new Color(red, green, blue);
+        }
+        public void draw(Graphics g) {
+            g.setColor(color);
 
             g.fillOval(x - diameter, y - diameter, diameter, diameter);
         }
