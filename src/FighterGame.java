@@ -3,6 +3,7 @@ import java.util.Random;
 import java.awt.event.KeyListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
 
 public class FighterGame implements KeyListener, ActionListener
@@ -27,8 +28,14 @@ public class FighterGame implements KeyListener, ActionListener
 
         // Example health and strength for fighter two
         window.addKeyListener(this);
+
     }
-    public void ActionPerformed()
+    public void actionPerformed(ActionEvent e)
+    {
+        one.move();
+        window.repaint();
+    }
+
     public void keyPressed(KeyEvent e) {
         // The keyCode lets you know which key was pressed
         switch(e.getKeyCode())
@@ -64,5 +71,7 @@ public class FighterGame implements KeyListener, ActionListener
 
     public static void main(String[] args) {
         FighterGame game = new FighterGame();
+        Timer clock = new Timer(100, game);
+        clock.start();
     }
 }

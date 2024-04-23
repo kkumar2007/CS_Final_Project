@@ -48,11 +48,20 @@ public class Fighter {
             y = where;
         }
     public void jump() {
-        dy = 10;
+            if(y>=450)
+            {
+                dy = -50;
+            }
         }
     public void move() {
         y+= dy;
-        dy++;
+        dy+=10;
+        if(y>=450)
+        {
+            y = 450;
+            dy=0;
+        }
+
     }
 
         // Getter for health
