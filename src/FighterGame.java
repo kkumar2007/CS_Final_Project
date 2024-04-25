@@ -18,12 +18,13 @@ public class FighterGame implements KeyListener, ActionListener
     public FighterGame() {
         isGameOver = false;
         state = 0;
-        one = new Fighter(100, 20, 500, 450, 0, 0, null); // pass null temporarily
-        two = new Fighter(100, 20, 200, 450, 0, 0, null); // pass null temporarily
+        one = new Fighter("Player two", 100, 20, 550, 450, 0, 0, null); // pass null temporarily
+        two = new Fighter("Player one", 100, 20, 250, 450, 0, 0, null); // pass null temporarily
         window = new FighterGameView(one, two); // Initialize window before creating fighters
 
         one.setView(window); // Set the view for fighter one
         two.setView(window); // Set the view for fighter two
+        one.switchDirection();
 
 
         // Example health and strength for fighter two
@@ -34,6 +35,13 @@ public class FighterGame implements KeyListener, ActionListener
     {
         one.move();
         two.move();
+        if (one.getX() < two.getX() && one.facingRight) {
+            one.switchDirection();
+            two.switchDirection();
+        } else if (one.getX() > two.getX() && !one.facingRight) {
+            one.switchDirection();
+            two.switchDirection();
+        }
         window.repaint();
     }
 
@@ -56,9 +64,16 @@ public class FighterGame implements KeyListener, ActionListener
             case KeyEvent.VK_A: // Make the ball smaller - multiply its diameter by 1/2
                 two.shiftX(-STEP_SIZE, 0, FighterGameView.WIDTH);
                 break;
-            case KeyEvent.VK_D: // Change the color
+            case KeyEvent.VK_D: //move
                 two.shiftX(STEP_SIZE, 0, FighterGameView.WIDTH);
                 break;
+            case KeyEvent.VK_S: // Change the color
+                two.attack(one);
+                break;
+            case KeyEvent.VK_ENTER: // Change the color
+                one.attack(two);
+                break;
+
         }
         window.repaint();
     }
