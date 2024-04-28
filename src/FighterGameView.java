@@ -4,18 +4,21 @@ import java.util.ArrayList;
 
 public class FighterGameView extends JFrame {
     public static int HEIGHT = 600, WIDTH = 800;
-    private FighterGameView game;
+    private FighterGame game;
+    public Platform platform1;
 
     private Image background;
+    private Image start;
     public Fighter f;
     public Fighter f2;
 
-    public FighterGameView(Fighter fighter, Fighter f2) {
+    public FighterGameView(Fighter fighter, Fighter f2, FighterGame game) {
 
         f = fighter;
         this.f2 = f2;
         this.game = game;
         background = new ImageIcon("Resources/back.png").getImage();
+        start = new ImageIcon("Resources/2- Player.png").getImage();
 
         this.setSize(WIDTH, HEIGHT);
         this.setTitle("Fighter");
@@ -25,12 +28,21 @@ public class FighterGameView extends JFrame {
 
 
     public void paint(Graphics g) {
-        g.drawImage(background, 0, 0, WIDTH, HEIGHT, this);
-        f.draw(g);
-        f2.draw(g);
 
-        drawHealthBar(g, f, false); // Left health bar for fighter 1
-        drawHealthBar(g, f2, true);
+        if(game.getState() == 0)
+        {
+            g.drawImage(start, 0, 0, WIDTH, HEIGHT, this);
+        }
+        else if(game.getState() == 1)
+        {
+            g.drawImage(background, 0, 0, WIDTH, HEIGHT, this);
+            f.draw(g);
+            f2.draw(g);
+
+            drawHealthBar(g, f, false); // Left health bar for fighter 1
+            drawHealthBar(g, f2, true);
+
+        }
     }
     private void drawHealthBar(Graphics g, Fighter fighter, boolean isLeft) {
         int barX = isLeft ? 20 : WIDTH - 220; // X-coordinate for left or right health bar
