@@ -1,16 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class FighterGameView extends JFrame {
     public static int HEIGHT = 600, WIDTH = 800;
     private FighterGame game;
-    public Platform platform1;
+
 
     private Image background;
     private Image start;
     public Fighter f;
     public Fighter f2;
+
 
     public FighterGameView(Fighter fighter, Fighter f2, FighterGame game) {
 
@@ -33,6 +33,7 @@ public class FighterGameView extends JFrame {
         {
             g.drawImage(start, 0, 0, WIDTH, HEIGHT, this);
         }
+
         else if(game.getState() == 1)
         {
             g.drawImage(background, 0, 0, WIDTH, HEIGHT, this);
@@ -41,7 +42,9 @@ public class FighterGameView extends JFrame {
 
             drawHealthBar(g, f, false); // Left health bar for fighter 1
             drawHealthBar(g, f2, true);
-
+            for (Platform platform : game.getPlatforms()) {
+                g.fillRect(platform.getX(), platform.getY(), platform.getWidth(), platform.getHeight());
+            }
         }
     }
     private void drawHealthBar(Graphics g, Fighter fighter, boolean isLeft) {
@@ -61,5 +64,6 @@ public class FighterGameView extends JFrame {
         g.setColor(Color.GREEN);
         g.fillRect(barX, barY, fillWidth, barHeight);
     }
+
 }
 

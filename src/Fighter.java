@@ -18,6 +18,7 @@ public class Fighter {
     private int dy;
     public int diameter = 100;
     public FighterGameView view;
+    public FighterGame game;
     private Color defendColor;
     private int defendRadius;
     private boolean isDefending;
@@ -29,8 +30,9 @@ public class Fighter {
     private boolean isAttacking;
     private Image attackImage;
     private Image attackImageLeft;
+    private ImageIcon walkIcon;
 
-    public Fighter(String name, int health, int strength, int x, int y, int dx, int dy, FighterGameView view) {
+    public Fighter(String name, int health, int strength, int x, int y, int dx, int dy, FighterGameView view, FighterGame game) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -46,13 +48,17 @@ public class Fighter {
         isAttacking = false;
         attackImage = new ImageIcon("Resources/attack.png").getImage();
         attackImageLeft = new ImageIcon("Resources/attack_left.png").getImage();
+        this.game= game;
 
         isDefending = false;
         defendTimer = new Timer();
         if (name.equals("Player two")) {
             facingRight = false;
         }
+        walkIcon = new ImageIcon("Resources/fighter_walk.gif");
+
     }
+
 
     public void defend() {
         if (!isDefending) {
@@ -66,13 +72,20 @@ public class Fighter {
             }, 3000);
         }
     }
+    public void stopAttack()
+    {
+        isAttacking = false;
+    }
 
     public void stopDefend() {
         isDefending = false;
     }
 
-    public boolean isDefending() {
+    public boolean getIsDefending() {
         return isDefending;
+    }
+    public boolean getIsAttacking() {
+        return isAttacking;
     }
 
     public String getName() {
@@ -125,6 +138,8 @@ public class Fighter {
     public int getY() {
         return y;
     }
+    public void setDx(int num)
+    {dx = num;}
 
     public void jump() {
         if (y >= 450) {
@@ -139,6 +154,39 @@ public class Fighter {
             y = 450;
             dy = 0;
         }
+        if (dx != 0 && !isDefending) {
+            int copy = x;
+            if (x + dx < 0 && dx < 0) {
+                x = 10;
+            } else if (x + dx > 800 && dx >= 0) {
+                x = 790;
+            } else {
+                x += dx;
+            }
+
+            // Update facingRight only when actively moving left or right
+            if (dx < 0) {
+                facingRight = false;
+            } else if (dx > 0) {
+                facingRight = true;
+            }
+        }
+        for (Platform platform : game.getPlatforms()) {
+            if (checkCollision(platform)) {
+                // adjust the fighter's position to be on top of the platform
+                y = platform.getY() - diameter;
+                dy = 0;
+                break;
+            }
+        }
+    }
+    private boolean checkCollision(Platform platform) {
+        if (x + diameter > platform.getX() && x < platform.getX() + platform.getWidth()) {
+            if (y + diameter > platform.getY() && y < platform.getY() + platform.getHeight()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Getter for health
@@ -170,33 +218,32 @@ public class Fighter {
             // If any fighter's health is less than or equal to 0, paint the screen white
             g.setColor(Color.WHITE);
             g.drawString(getName() + " lost", 400, 300);
+
         }
         if (isDefending) {
             // Draw defend image if defending
-            if(facingRight)
-                {
-                    g.setColor(defendColor);
-                    g.drawOval(x - diameter, y - diameter, defendRadius, defendRadius);
-                }
-                else
-                {
-                    g.setColor(defendColor);
-                    g.drawOval(x, y - diameter, defendRadius, defendRadius);
-                }
+            if (facingRight) {
+                g.setColor(defendColor);
+                g.drawOval(x - diameter, y - diameter, defendRadius, defendRadius);
+            } else {
+                g.setColor(defendColor);
+                g.drawOval(x, y - diameter, defendRadius, defendRadius);
+            }
         }
-            // Draw regular image if not defending
-        if (facingRight) {
-            g.drawImage(walk, x - diameter, y - diameter, diameter, diameter, null);
-        } else {
-                // Flip the image horizontally
-            g.drawImage(walkLeft, x, y - diameter, diameter, diameter, null);
-        }
+        // Draw regular image if not defending
         if (isAttacking) {
             // Draw appropriate attack image based on direction
             if (facingRight) {
-                g.drawImage(attackImage, x - diameter / 2, y - diameter / 2, diameter, diameter, null);
+                g.drawImage(attackImage, x - diameter, y - diameter, diameter, diameter, null);
             } else {
-                g.drawImage(attackImageLeft, x - diameter / 2, y - diameter / 2, diameter, diameter, null);
+                g.drawImage(attackImageLeft, x, y - diameter, diameter, diameter, null);
+            }
+        } else if (!isAttacking) {
+            if (facingRight) {
+                g.drawImage(walk, x - diameter, y - diameter, diameter, diameter, null);
+            } else {
+                // Flip the image horizontally
+                g.drawImage(walkLeft, x, y - diameter, diameter, diameter, null);
             }
         }
     }
