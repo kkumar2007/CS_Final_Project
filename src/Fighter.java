@@ -155,7 +155,6 @@ public class Fighter {
             dy = 0;
         }
         if (dx != 0 && !isDefending) {
-            int copy = x;
             if (x + dx < 0 && dx < 0) {
                 x = 10;
             } else if (x + dx > 800 && dx >= 0) {
@@ -174,7 +173,7 @@ public class Fighter {
         for (Platform platform : game.getPlatforms()) {
             if (checkCollision(platform)) {
                 // adjust the fighter's position to be on top of the platform
-                y = platform.getY() - diameter;
+                y = platform.getY()+ 10;
                 dy = 0;
                 break;
             }
@@ -224,7 +223,7 @@ public class Fighter {
             // Draw defend image if defending
             if (facingRight) {
                 g.setColor(defendColor);
-                g.drawOval(x - diameter, y - diameter, defendRadius, defendRadius);
+                g.drawOval(x , y - diameter, defendRadius, defendRadius);
             } else {
                 g.setColor(defendColor);
                 g.drawOval(x, y - diameter, defendRadius, defendRadius);
@@ -234,13 +233,13 @@ public class Fighter {
         if (isAttacking) {
             // Draw appropriate attack image based on direction
             if (facingRight) {
-                g.drawImage(attackImage, x - diameter, y - diameter, diameter, diameter, null);
+                g.drawImage(attackImage, x, y - diameter, diameter, diameter, null);
             } else {
                 g.drawImage(attackImageLeft, x, y - diameter, diameter, diameter, null);
             }
         } else if (!isAttacking) {
             if (facingRight) {
-                g.drawImage(walk, x - diameter, y - diameter, diameter, diameter, null);
+                g.drawImage(walk, x, y - diameter, diameter, diameter, null);
             } else {
                 // Flip the image horizontally
                 g.drawImage(walkLeft, x, y - diameter, diameter, diameter, null);

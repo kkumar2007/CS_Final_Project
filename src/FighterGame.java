@@ -41,7 +41,7 @@ public class FighterGame implements KeyListener, ActionListener
         int numPlatforms = 5; // adjust this to generate more or fewer platforms
         for (int i = 0; i < numPlatforms; i++) {
             int x = random.nextInt(FighterGameView.WIDTH - 100); // adjust the width to avoid platforms going off-screen
-            int y = random.nextInt(FighterGameView.HEIGHT - 200) + 200; // adjust the height to ensure platforms are below the top of the screen
+            int y = random.nextInt(FighterGameView.HEIGHT - 190); // adjust the height to ensure platforms are below the top of the screen
             int width = random.nextInt(100) + 50; // adjust the width to make platforms varying sizes
             int height = 20; // adjust the height to make platforms thicker or thinner
             Platform platform = new Platform(x, y, width, height);

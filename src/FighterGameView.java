@@ -43,9 +43,31 @@ public class FighterGameView extends JFrame {
             drawHealthBar(g, f, false); // Left health bar for fighter 1
             drawHealthBar(g, f2, true);
             for (Platform platform : game.getPlatforms()) {
+                g.setColor(Color.WHITE);
                 g.fillRect(platform.getX(), platform.getY(), platform.getWidth(), platform.getHeight());
             }
+            if (f.getHealth() <= 0) {
+                displayWinScreen(g, f2.getName()); // Display win screen for player 2
+            } else if (f2.getHealth() <= 0) {
+                displayWinScreen(g, f.getName()); // Display win screen for player 1
+            }
         }
+    }
+    private void displayWinScreen(Graphics g, String winnerName) {
+        // Set background color
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+
+        // Set text color and font
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 40));
+
+        // Display win message
+        String winMessage = winnerName + " wins!";
+        int messageWidth = g.getFontMetrics().stringWidth(winMessage);
+        int x = (WIDTH - messageWidth) / 2;
+        int y = HEIGHT / 2;
+        g.drawString(winMessage, x, y);
     }
     private void drawHealthBar(Graphics g, Fighter fighter, boolean isLeft) {
         int barX = isLeft ? 20 : WIDTH - 220; // X-coordinate for left or right health bar
