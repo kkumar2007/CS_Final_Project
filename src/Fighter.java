@@ -28,6 +28,7 @@ public class Fighter {
     private Image walkLeft;
     public boolean facingRight = true; // Default direction
     private boolean isAttacking;
+    private boolean isJumping;
     private Image attackImage;
     private Image attackImageLeft;
     private ImageIcon walkIcon;
@@ -46,6 +47,7 @@ public class Fighter {
         defendColor = new Color(173, 216, 230); // Light blue color
         defendRadius = diameter + 10; // Adjust the radius as needed
         isAttacking = false;
+        isJumping = false;
         attackImage = new ImageIcon("Resources/attack.png").getImage();
         attackImageLeft = new ImageIcon("Resources/attack_left.png").getImage();
         this.game= game;
@@ -54,6 +56,10 @@ public class Fighter {
         defendTimer = new Timer();
         if (name.equals("Player two")) {
             facingRight = false;
+            walk = new ImageIcon("Resources/walk2right.png").getImage();
+            walkLeft = new ImageIcon("Resources/walk2left2.png").getImage();
+            attackImage = new ImageIcon("Resources/attack2right.png").getImage();
+            attackImageLeft = new ImageIcon("Resources/walk2attack2.png").getImage();
         }
         walkIcon = new ImageIcon("Resources/fighter_walk.gif");
 
@@ -148,28 +154,9 @@ public class Fighter {
     }
 
     public void move() {
+        int groundLevel = 450;
         y += dy;
         dy += 15;
-        if (y >= 450) {
-            y = 450;
-            dy = 0;
-        }
-        if (dx != 0 && !isDefending) {
-            if (x + dx < 0 && dx < 0) {
-                x = 10;
-            } else if (x + dx > 800 && dx >= 0) {
-                x = 790;
-            } else {
-                x += dx;
-            }
-
-            // Update facingRight only when actively moving left or right
-            if (dx < 0) {
-                facingRight = false;
-            } else if (dx > 0) {
-                facingRight = true;
-            }
-        }
         for (Platform platform : game.getPlatforms()) {
             if (checkCollision(platform)) {
                 // adjust the fighter's position to be on top of the platform
@@ -178,10 +165,31 @@ public class Fighter {
                 break;
             }
         }
+        if (y >= groundLevel) {
+            y = groundLevel;
+            dy = 0;
+        }
+
+        if (dx != 0 && !isDefending) {
+            if (x + dx < 0 && dx < 0) {
+                x = 10;
+            } else if (x + dx > 800 && dx >= 0) {
+                x = 790;
+            } else {
+                x += dx;
+            }
+            // Update facingRight only when actively moving left or right
+            if (dx < 0) {
+                facingRight = false;
+            } else if (dx > 0) {
+                facingRight = true;
+            }
+        }
     }
     private boolean checkCollision(Platform platform) {
-        if (x + diameter > platform.getX() && x < platform.getX() + platform.getWidth()) {
+        if (x + diameter + 10 > platform.getX() && x < platform.getX() + platform.getWidth()) {
             if (y + diameter > platform.getY() && y < platform.getY() + platform.getHeight()) {
+                isJumping = false;
                 return true;
             }
         }

@@ -4,12 +4,11 @@ import java.awt.*;
 public class FighterGameView extends JFrame {
     public static int HEIGHT = 600, WIDTH = 800;
     private FighterGame game;
-
-
     private Image background;
     private Image start;
     public Fighter f;
     public Fighter f2;
+    private Image platformImage;
 
 
     public FighterGameView(Fighter fighter, Fighter f2, FighterGame game) {
@@ -19,6 +18,7 @@ public class FighterGameView extends JFrame {
         this.game = game;
         background = new ImageIcon("Resources/back.png").getImage();
         start = new ImageIcon("Resources/2- Player.png").getImage();
+        platformImage = new ImageIcon("Platform.png").getImage();
 
         this.setSize(WIDTH, HEIGHT);
         this.setTitle("Fighter");

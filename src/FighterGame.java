@@ -5,9 +5,6 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
-
-
-
 public class FighterGame implements KeyListener, ActionListener
 {
     private FighterGameView window;
@@ -19,7 +16,7 @@ public class FighterGame implements KeyListener, ActionListener
     private ArrayList<Platform> platforms;
     private Random random;
 
-    public FighterGame() {
+    public FighterGame(boolean generatePlatforms) {
         isGameOver = false;
         one = new Fighter("Player two", 200, 20, 550, 450, 0, 0, null, this); // pass null temporarily
         two = new Fighter("Player one", 200, 20, 250, 450, 0, 0, null, this); // pass null temporarily
@@ -27,27 +24,48 @@ public class FighterGame implements KeyListener, ActionListener
 
         one.setView(window); // Set the view for fighter one
         two.setView(window); // Set the view for fighter two
-
-
+        random = new Random();
 
         // Example health and strength for fighter two
         window.addKeyListener(this);
         platforms = new ArrayList<>();
         random = new Random();
-        generatePlatforms();
+        if (generatePlatforms) {
+            generatePlatforms();
+        }
 
     }
     private void generatePlatforms() {
         int numPlatforms = 5; // adjust this to generate more or fewer platforms
-        for (int i = 0; i < numPlatforms; i++) {
-            int x = random.nextInt(FighterGameView.WIDTH - 100); // adjust the width to avoid platforms going off-screen
-            int y = random.nextInt(FighterGameView.HEIGHT - 190); // adjust the height to ensure platforms are below the top of the screen
-            int width = random.nextInt(100) + 50; // adjust the width to make platforms varying sizes
-            int height = 20; // adjust the height to make platforms thicker or thinner
-            Platform platform = new Platform(x, y, width, height);
-            platforms.add(platform);
+        int platformWidth = 100; // Width of each platform
+        int spacing = 150; // Increased spacing between platforms
+
+        int y = 330; // Adjust this value to change the vertical position of the platforms
+
+        boolean generateVertical = random.nextBoolean(); // Randomly decide whether to generate vertical platforms
+
+        if (generateVertical) {
+            int x = spacing; // Initial x-coordinate for the first platform
+            int height = 20; // Height of each platform
+            spacing = (800 - platformWidth * numPlatforms) / (numPlatforms + 1); // Calculate spacing between platforms
+            for (int i = 0; i < numPlatforms; i++) {
+                Platform platform = new Platform(x, y, platformWidth, height);
+                platforms.add(platform);
+                x += platformWidth + spacing; // Update x-coordinate for the next platform
+            }
+        } else {
+            for (int i = 0; i < numPlatforms; i++) {
+                int x = i * (platformWidth + spacing) + spacing; // Adjusting the x-coordinate calculation
+                int height = 20; // adjust the height as needed
+                Platform platform = new Platform(x, y, platformWidth, height);
+                platforms.add(platform);
+            }
         }
     }
+
+
+
+
     public ArrayList<Platform> getPlatforms() {
         return platforms;
     }
@@ -142,7 +160,8 @@ public class FighterGame implements KeyListener, ActionListener
 
     }
     public static void main(String[] args) {
-        FighterGame game = new FighterGame();
+        boolean generatePlatforms = new Random().nextBoolean();
+        FighterGame game = new FighterGame(generatePlatforms);
         Timer clock = new Timer(100, game);
         clock.start();
     }
