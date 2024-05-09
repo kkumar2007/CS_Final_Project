@@ -8,34 +8,38 @@ import javax.swing.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
+// Class definition for a Fighter in the game
 public class Fighter {
-    private int health;
-    final int MAX_HEALTH = 200;
-    private int strength;
-    private int x;              // Center x
-    private int y;              // Center y
-    private int dx;             // delta x in one time unit
-    private int dy;
-    public int diameter = 100;
-    public FighterGameView view;
-    public FighterGame game;
-    private Color defendColor;
-    private int defendRadius;
-    private boolean isDefending;
-    private Timer defendTimer;
-    private String name;
-    private Image walk;
-    private Image walkLeft;
-    public boolean facingRight = true; // Default direction
-    private boolean isAttacking;
-    private boolean isJumping;
-    private Image attackImage;
-    private Image attackImageLeft;
-    private ImageIcon walkIcon;
-    private long lastAttackTime; // Track the last time an attack was executed
+    // Instance variables
+    private int health; // Fighter's health
+    final int MAX_HEALTH = 200; // Maximum health value
+    private int strength; // Fighter's strength
+    private int x; // Center x-coordinate
+    private int y; // Center y-coordinate
+    private int dx; // Change in x-coordinate in one time unit
+    private int dy; // Change in y-coordinate in one time unit
+    public int diameter = 100; // Diameter of the fighter
+    public FighterGameView view; // Reference to the game view
+    public FighterGame game; // Reference to the game logic
+    private Color defendColor; // Color for defending
+    private int defendRadius; // Radius for defending
+    private boolean isDefending; // Flag indicating whether the fighter is defending
+    private Timer defendTimer; // Timer for defending
+    private String name; // Name of the fighter
+    private Image walk; // Image for walking (facing right)
+    private Image walkLeft; // Image for walking (facing left)
+    public boolean facingRight = true; // Default direction (facing right)
+    private boolean isAttacking; // Flag indicating whether the fighter is attacking
+    private boolean isJumping; // Flag indicating whether the fighter is jumping
+    private Image attackImage; // Image for attacking (facing right)
+    private Image attackImageLeft; // Image for attacking (facing left)
+    private ImageIcon walkIcon; // Icon for walking animation
+    private long lastAttackTime; // Timestamp of the last attack
     private static final long ATTACK_COOLDOWN = 1000; // Cooldown period for attacks (in milliseconds)
 
+    // Constructor to initialize a Fighter object
     public Fighter(String name, int health, int strength, int x, int y, int dx, int dy, FighterGameView view, FighterGame game) {
+        // Initialize instance variables
         this.name = name;
         this.x = x;
         this.y = y;
@@ -44,19 +48,21 @@ public class Fighter {
         this.health = health;
         this.strength = strength;
         this.view = view;
-        walk = new ImageIcon("Resources/fighter.png").getImage();
-        walkLeft = new ImageIcon("Resources/fighter_left.png").getImage();
-        defendColor = new Color(173, 216, 230); // Light blue color
-        defendRadius = diameter + 10; // Adjust the radius as needed
+        walk = new ImageIcon("Resources/fighter.png").getImage(); // Load walk image (facing right)
+        walkLeft = new ImageIcon("Resources/fighter_left.png").getImage(); // Load walk image (facing left)
+        defendColor = new Color(173, 216, 230); // Light blue color for defending
+        defendRadius = diameter + 10; // Adjusted radius for defending
         isAttacking = false;
         isJumping = false;
-        attackImage = new ImageIcon("Resources/attack.png").getImage();
-        attackImageLeft = new ImageIcon("Resources/attack_left.png").getImage();
-        this.game= game;
+        attackImage = new ImageIcon("Resources/attack.png").getImage(); // Load attack image (facing right)
+        attackImageLeft = new ImageIcon("Resources/attack_left.png").getImage(); // Load attack image (facing left)
+        this.game = game;
         lastAttackTime = 0; // Initialize last attack time
 
         isDefending = false;
         defendTimer = new Timer();
+
+        // Load specific resources for Player two fighter
         if (name.equals("Player two")) {
             facingRight = false;
             walk = new ImageIcon("Resources/walk2right.png").getImage();
@@ -65,15 +71,15 @@ public class Fighter {
             attackImageLeft = new ImageIcon("Resources/walk2attack2.png").getImage();
         }
         walkIcon = new ImageIcon("Resources/fighter_walk.gif");
-
     }
 
-
+    // Method to initiate defending
     public void defend() {
         if (!isDefending) {
             isDefending = true;
 
             // Start the defend timer for 3 seconds
+            //learnt how to implement and do it through the CS2 tutors and through Java manual on Timers to know how to set it up
             defendTimer.schedule(new TimerTask() {
                 public void run() {
                     stopDefend();
@@ -81,42 +87,53 @@ public class Fighter {
             }, 3000);
         }
     }
-    public void stopAttack()
-    {
+
+    // Method to stop attacking
+    public void stopAttack() {
         isAttacking = false;
     }
 
+    // Method to stop defending
     public void stopDefend() {
         isDefending = false;
     }
 
+    // Getter for isDefending flag
     public boolean getIsDefending() {
         return isDefending;
     }
+
+    // Getter for isAttacking flag
     public boolean getIsAttacking() {
         return isAttacking;
     }
 
+    // Getter for fighter's name
     public String getName() {
         return name;
     }
 
+    // Getter for maximum health
     public int getMaxHealth() {
         return MAX_HEALTH;
     }
 
+    // Method to switch direction
     public void switchDirection() {
         facingRight = !facingRight;
     }
 
+    // Getter for facingRight flag
     public boolean getFacingRight() {
         return facingRight;
     }
 
+    // Setter for FighterGameView
     public void setView(FighterGameView view) {
         this.view = view;
     }
 
+    // Method to handle defending with damage
     public void defend(int damage) {
         // Reduce health by the damage received
         health -= damage;
@@ -125,6 +142,7 @@ public class Fighter {
         }
     }
 
+    // Method to handle attacking
     public void attack(Fighter opponent) {
         if (!isDefending && System.currentTimeMillis() - lastAttackTime >= ATTACK_COOLDOWN) {
             // Allow attack only if not defending and cooldown period has elapsed
@@ -136,36 +154,44 @@ public class Fighter {
                     }
                     opponent.defend(damage);
                     isAttacking = true;
+                    //learnt this code from CS2 tutors
                     lastAttackTime = System.currentTimeMillis(); // Update last attack time
                 }
             }
         }
     }
 
+    // Getter for x-coordinate
     public int getX() {
         return x;
     }
 
+    // Getter for y-coordinate
     public int getY() {
         return y;
     }
-    public void setDx(int num)
-    {dx = num;}
 
+    // Setter for dx (change in x-coordinate)
+    public void setDx(int num) {
+        dx = num;
+    }
+
+    // Method to handle jumping
     public void jump() {
         if (y >= 450) {
             dy = -50;
         }
     }
 
+    // Method to handle movement
     public void move() {
         int groundLevel = 450;
         y += dy;
         dy += 15;
         for (Platform platform : game.getPlatforms()) {
             if (checkCollision(platform)) {
-                // adjust the fighter's position to be on top of the platform
-                y = platform.getY()+ 10;
+                // Adjust the fighter's position to be on top of the platform
+                y = platform.getY() + 10;
                 dy = 0;
                 break;
             }
@@ -191,6 +217,8 @@ public class Fighter {
             }
         }
     }
+
+    // Method to check collision with a platform
     private boolean checkCollision(Platform platform) {
         if (x + diameter + 10 > platform.getX() && x < platform.getX() + platform.getWidth()) {
             if (y + diameter > platform.getY() && y < platform.getY() + platform.getHeight()) {
@@ -211,6 +239,7 @@ public class Fighter {
         return strength;
     }
 
+    // Method to shift x-coordinate within bounds
     public void shiftX(int shift, int xLow, int xHigh) {
         if (!isDefending) { // Only shift if not defending
             int copy = x;
@@ -225,24 +254,24 @@ public class Fighter {
         }
     }
 
+    // Method to draw the fighter
     public void draw(Graphics g) {
         if (getHealth() <= 0) {
             // If any fighter's health is less than or equal to 0, paint the screen white
             g.setColor(Color.WHITE);
             g.drawString(getName() + " lost", 400, 300);
-
         }
         if (isDefending) {
             // Draw defend image if defending
             if (facingRight) {
                 g.setColor(defendColor);
-                g.drawOval(x , y - diameter, defendRadius, defendRadius);
+                g.drawOval(x, y - diameter, defendRadius, defendRadius);
             } else {
                 g.setColor(defendColor);
                 g.drawOval(x, y - diameter, defendRadius, defendRadius);
             }
         }
-        // Draw regular image if not defending
+        // Draw appropriate image based on actions
         if (isAttacking) {
             // Draw appropriate attack image based on direction
             if (facingRight) {
