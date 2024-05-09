@@ -32,6 +32,8 @@ public class Fighter {
     private Image attackImage;
     private Image attackImageLeft;
     private ImageIcon walkIcon;
+    private long lastAttackTime; // Track the last time an attack was executed
+    private static final long ATTACK_COOLDOWN = 1000; // Cooldown period for attacks (in milliseconds)
 
     public Fighter(String name, int health, int strength, int x, int y, int dx, int dy, FighterGameView view, FighterGame game) {
         this.name = name;
@@ -51,6 +53,7 @@ public class Fighter {
         attackImage = new ImageIcon("Resources/attack.png").getImage();
         attackImageLeft = new ImageIcon("Resources/attack_left.png").getImage();
         this.game= game;
+        lastAttackTime = 0; // Initialize last attack time
 
         isDefending = false;
         defendTimer = new Timer();
@@ -123,7 +126,8 @@ public class Fighter {
     }
 
     public void attack(Fighter opponent) {
-        if (!isDefending) { // Only attack if not defending
+        if (!isDefending && System.currentTimeMillis() - lastAttackTime >= ATTACK_COOLDOWN) {
+            // Allow attack only if not defending and cooldown period has elapsed
             if (Math.abs(x - opponent.x) <= diameter) {
                 if (Math.abs(y - opponent.y) <= diameter) {
                     int damage = strength;
@@ -132,6 +136,7 @@ public class Fighter {
                     }
                     opponent.defend(damage);
                     isAttacking = true;
+                    lastAttackTime = System.currentTimeMillis(); // Update last attack time
                 }
             }
         }

@@ -43,24 +43,12 @@ public class FighterGame implements KeyListener, ActionListener
         int y = 330; // Adjust this value to change the vertical position of the platforms
 
         boolean generateVertical = random.nextBoolean(); // Randomly decide whether to generate vertical platforms
-
-        if (generateVertical) {
-            int x = spacing; // Initial x-coordinate for the first platform
-            int height = 20; // Height of each platform
-            spacing = (800 - platformWidth * numPlatforms) / (numPlatforms + 1); // Calculate spacing between platforms
-            for (int i = 0; i < numPlatforms; i++) {
-                Platform platform = new Platform(x, y, platformWidth, height);
-                platforms.add(platform);
-                x += platformWidth + spacing; // Update x-coordinate for the next platform
-            }
-        } else {
             for (int i = 0; i < numPlatforms; i++) {
                 int x = i * (platformWidth + spacing) + spacing; // Adjusting the x-coordinate calculation
                 int height = 20; // adjust the height as needed
                 Platform platform = new Platform(x, y, platformWidth, height);
                 platforms.add(platform);
             }
-        }
     }
 
 
@@ -118,6 +106,12 @@ public class FighterGame implements KeyListener, ActionListener
                 break;
             case KeyEvent.VK_ENTER: // Change the color
                 one.attack(two);
+                break;
+            case KeyEvent.VK_9: // Change the color
+                boolean generatePlatforms = new Random().nextBoolean();
+                FighterGame game = new FighterGame(generatePlatforms);
+                Timer clock = new Timer(100, game);
+                clock.start();
                 break;
 
         }

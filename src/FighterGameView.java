@@ -63,7 +63,7 @@ public class FighterGameView extends JFrame {
         g.setFont(new Font("Arial", Font.BOLD, 40));
 
         // Display win message
-        String winMessage = winnerName + " wins!";
+        String winMessage = winnerName + " wins! (9 to play again)";
         int messageWidth = g.getFontMetrics().stringWidth(winMessage);
         int x = (WIDTH - messageWidth) / 2;
         int y = HEIGHT / 2;
