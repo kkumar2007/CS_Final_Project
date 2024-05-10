@@ -1,3 +1,6 @@
+//Kavan Kumar
+//CS2
+//Mr. Blick
 import javax.swing.*;
 import java.awt.*;
 
@@ -86,7 +89,12 @@ public class FighterGameView extends JFrame {
     // Method to draw health bars for fighters
     private void drawHealthBar(Graphics g, Fighter fighter, boolean isLeft) {
         //new way of using code that I learnt from the Java manual
-        int barX = isLeft ? 20 : WIDTH - 220; // X-coordinate for left or right health bar
+        int barX;
+        if (isLeft) {
+            barX = 20;
+        } else {
+            barX = WIDTH - 220;
+        }
         int barY = 20; // Y-coordinate for both health bars
         int barWidth = 200; // Width of health bar
         int barHeight = 20; // Height of health bar

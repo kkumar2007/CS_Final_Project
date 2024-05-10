@@ -1,7 +1,6 @@
-/**
- * The Platform class represents a platform in the game, which is essentially a flat surface that the fighters can stand on.
- * It contains information about the position and dimensions of the platform.
- */
+//Kavan Kumar
+//CS2
+//Mr. Blick
 public class Platform {
     private int x; // The x-coordinate of the platform
     private int y; // The y-coordinate of the platform

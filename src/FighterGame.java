@@ -1,3 +1,6 @@
+//Kavan Kumar
+//CS2
+//Mr. Blick
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.ActionEvent;
@@ -44,10 +47,10 @@ public class FighterGame implements KeyListener, ActionListener {
         int numPlatforms = 5; // Adjust this to generate more or fewer platforms
         int platformWidth = 100; // Width of each platform
         int spacing = 150; // Increased spacing between platforms
-        int y = 330; // Adjust this value to change the vertical position of the platforms
-        boolean generateVertical = random.nextBoolean(); // Randomly decide whether to generate vertical platforms
+        int y = 330; // Adjussst this value to change the vertical position of the platforms
+        boolean generateVertical = random.nextBoolean(); // randomly decide whether to generate vertical platforms
         for (int i = 0; i < numPlatforms; i++) {
-            int x = i * (platformWidth + spacing) + spacing; // Adjusting the x-coordinate calculation
+            int x = i * (platformWidth + spacing) + spacing; // adjusts the x-coordinate calculation
             int height = 20; // Adjust the height as needed
             Platform platform = new Platform(x, y, platformWidth, height);
             platforms.add(platform);
@@ -149,7 +152,6 @@ public class FighterGame implements KeyListener, ActionListener {
     }
 
     // Method to handle key typed events
-    @Override
     public void keyTyped(KeyEvent e) {}
 
     // Main method to start the game

@@ -1,9 +1,10 @@
+//Kavan Kumar
+//CS2
+//Mr. Blick
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.*;
-import java.util.Random;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -98,15 +99,6 @@ public class Fighter {
         isDefending = false;
     }
 
-    // Getter for isDefending flag
-    public boolean getIsDefending() {
-        return isDefending;
-    }
-
-    // Getter for isAttacking flag
-    public boolean getIsAttacking() {
-        return isAttacking;
-    }
 
     // Getter for fighter's name
     public String getName() {
@@ -116,16 +108,6 @@ public class Fighter {
     // Getter for maximum health
     public int getMaxHealth() {
         return MAX_HEALTH;
-    }
-
-    // Method to switch direction
-    public void switchDirection() {
-        facingRight = !facingRight;
-    }
-
-    // Getter for facingRight flag
-    public boolean getFacingRight() {
-        return facingRight;
     }
 
     // Setter for FighterGameView
@@ -185,7 +167,6 @@ public class Fighter {
 
     // Method to handle movement
     public void move() {
-        int groundLevel = 450;
         y += dy;
         dy += 15;
         for (Platform platform : game.getPlatforms()) {
@@ -196,8 +177,8 @@ public class Fighter {
                 break;
             }
         }
-        if (y >= groundLevel) {
-            y = groundLevel;
+        if (y >= 450) {
+            y = 450;
             dy = 0;
         }
 
@@ -234,25 +215,6 @@ public class Fighter {
         return health;
     }
 
-    // Getter for strength
-    public int getStrength() {
-        return strength;
-    }
-
-    // Method to shift x-coordinate within bounds
-    public void shiftX(int shift, int xLow, int xHigh) {
-        if (!isDefending) { // Only shift if not defending
-            int copy = x;
-            if (x + shift <= xLow && shift < 0) {
-                x = xLow;
-            } else if (x + shift >= xHigh && shift > 0) {
-                x = xHigh;
-            } else {
-                x += shift;
-            }
-            facingRight = (copy <= x);
-        }
-    }
 
     // Method to draw the fighter
     public void draw(Graphics g) {
